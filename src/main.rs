@@ -9,7 +9,6 @@
     ]	}
 */
 
-#![feature(if_let)]
 use std::os;
 
 extern {
@@ -115,18 +114,18 @@ fn main() {
     let mut loop_states: Vec<LoopState> = vec![];
     let code = args[1].as_slice();
     init_loop_states(&mut loop_states, code);
-    let mut pc = 0u;
+    let mut ip = 0u; // Instruction pointer
     loop {
-        if pc >= code.len() {
+        if ip >= code.len() {
             break;
         }
-        let op = code.char_at(pc);
+        let op = code.char_at(ip);
         match op {
             '>' => ptr += 1,
             '<' => {
                 if ptr == 0 {
-                    note_char_at(code, pc);
-                    panic!("can't < any more, pos {}", pc);
+                    note_char_at(code, ip);
+                    panic!("can't < any more, pos {}", ip);
                 }
                 ptr -= 1;
             }
@@ -138,18 +137,18 @@ fn main() {
             }
             '[' => {
                 if get_val_of_ptr(&val, ptr) == 0 {
-                    pc = match_loop_states(&mut loop_states, pc) + 1;
+                    ip = match_loop_states(&mut loop_states, ip) + 1;
                     continue;
                 }
             }
             ']' => {
-                pc = match_loop_states(&mut loop_states, pc);
+                ip = match_loop_states(&mut loop_states, ip);
                 continue;
             }
             'v' => println!("{}", get_val_of_ptr(&val, ptr)),
             _ => {}
         }
-        pc += 1;
+        ip += 1;
     }
     // println!("{}", val); // for debug, print all ptr values
 }

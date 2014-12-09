@@ -1,24 +1,42 @@
 = bfc
 
-A Brainfuck compiler written in Rust.
+A Brainfuck compiler written in Rust. by Liigo, 2014-12-8.
 
-Build: `cargo build`
+== Build
 
-Compile and execute Brainfuck source code:
+```
+cargo build
+```
 
+== Compile and execute
+
+A:
 ```
 ./target/bfc "++++++ [ > ++++++++++ < - ] > +++++ ."
 ```
-will print A.
+will print "A".
 
+Hello World:
 ```
 ./target/bfc "++++++++++[>+++++++>++++++++++>+++>+<<<<-]
 >++.>+.+++++++..+++.>++.<<+++++++++++++++.
 >.+++.------.--------.>+.>."
 ```
-will print Hello World!
+will print "Hello World!".
 
+Echo:
 ```
 ./target/bfc ", [ > + < - ] > ."
 ```
-will echo any char you input.
+will echo any character you input.
+
+== On error
+
+The compiler will provide detail error on bad input:
+```
+./target/bfc "+++[---][...[.]."
+
++++[---][...[.].
+        ^
+task '<main>' panicked at 'no `]` match this `[` at pos 8', /home/liigo/liigo/github/bfc/src/main.rs:76
+```
